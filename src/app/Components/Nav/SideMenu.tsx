@@ -46,7 +46,7 @@ const SideMenu = () => {
                                 <Link
                                     title={option.name}
                                     href={`/${option.name === "Home" ? "" : option.name.toLowerCase()}`}
-                                    className={`flex items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-amber-300 dark:hover:text-white transition-all mx-4 text-lg text-text_color ${pathname === `/${option.name === "Home" ? "" : option.name.toLowerCase()}` ? "bg-amber-300" : ""
+                                    className={`flex items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-amber-300 dark:hover:text-white transition-all mx-4 text-lg text-text_color ${pathname === `/${option.name === "Home" ? "" : option.name.toLowerCase()}` ? "bg-amber-300 text-white" : ""
                                         }`}
                                 >
                                     {option.logo}

@@ -13,7 +13,8 @@ export default {
         primary: "var(--primary-color)",
         secondary: "var(--secondary-color)",
         text_color: 'var(--text-color)',
-        background_hover: "var(--bg-hover)"
+        secondary_text_color: 'var(--text-secondary-color)',
+        background_hover: "var(--bg-hover)",
       },
     },
   },

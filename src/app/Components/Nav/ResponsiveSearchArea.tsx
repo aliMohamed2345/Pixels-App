@@ -12,7 +12,7 @@ const ResponsiveSearchArea = () => {
     const [searchValues, setSearchValues] = useState<string[]>([]);
     const [mediaOption, setMediaOption] = useState<string>("photo")
     const router = useRouter();
-
+console.log(mediaOption)
     useEffect(() => {
         // Load stored search values from localStorage
         const storedValues = JSON.parse(localStorage.getItem("search-values") || "[]");
@@ -63,12 +63,12 @@ const ResponsiveSearchArea = () => {
                     <div className="w-[80%] rounded-xl bg-slate-50 mx-auto my-4 relative border-2 border-slate-300 dark:border-gray-700 flex items-center transition-all">
                         <button type="button" className={`flex text-gray-700 items-center rounded-l-lg hover:bg-amber-500 justify-center gap-2 p-1 w-1/2 ${mediaOption === 'photo' && 'bg-amber-400'} transition-all hover:opacity-100`} onClick={() => setMediaOption('photo')}>
                             <IoImage />
-                            <span>Photo</span>
+                            <span>photo</span>
                         </button>
                         <div className="h-full bg-slate-400 w-0.5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                        <button type="button" className={`flex text-gray-700 items-center rounded-r-lg hover:bg-amber-500 justify-center gap-2 p-1 w-1/2 transition-all hover:opacity-100 ${mediaOption === 'videos' && 'bg-amber-400'}`} onClick={() => setMediaOption('video')} >
+                        <button type="button" className={`flex text-gray-700 items-center rounded-r-lg hover:bg-amber-500 justify-center gap-2 p-1 w-1/2 transition-all hover:opacity-100 ${mediaOption === 'video' && 'bg-amber-400'}`} onClick={() => setMediaOption('video')} >
                             <IoVideocam />
-                            <span>Videos</span>
+                            <span>video</span>
                         </button>
                     </div>
                     <div className="h-px w-full bg-gray-400 relative my-4"></div>

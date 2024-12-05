@@ -1,15 +1,12 @@
-// import { useSearchParams } from "next/navigation";
-interface PhotoIdProps {
-
-}
+'use client'
+import { useSearchParams } from "next/navigation";
 
 const PhotoId = () => {
-    // const param = useParams();
-    // console.log(param);
+    const query = useSearchParams().get('q');
     return (<>
         <div>
 
-            you have searched  about
+            you have searched about {query}
         </div>
     </>);
 }

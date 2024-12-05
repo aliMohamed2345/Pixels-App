@@ -5,7 +5,7 @@ import ResponsiveSearchArea from "@/app/Components/Nav/ResponsiveSearchArea";
 import Link from "next/link";
 const Nav = () => {
     return (
-        <header className=" shadow-md bg-secondary  ">
+        <header className=" shadow-md bg-secondary  fixed w-full z-10">
             <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 bg-secondary">
                 <div className="flex h-16 items-center justify-between">
                     <div className="md:flex md:items-center md:gap-12">

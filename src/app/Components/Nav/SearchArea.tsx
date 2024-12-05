@@ -69,18 +69,18 @@ const SearchArea = () => {
                     className="outline-none text-text_color border-none w-full h-full bg-transparent  rounded-md p-2 placeholder:text-lg"
                 />
             </div>
-            <div className={`w-[500px] transition-all ease-in-out bg-primary z-10 absolute rounded-b-2xl ${openSearchArea ? "opacity-100 scale-100 top-[49px] " : "opacity-0 scale-90 top-[-300px] "}`}>
+            <div className={`w-[500px] transition-all ease-in-out bg-primary z-10 absolute rounded-b-2xl ${openSearchArea ? "opacity-100 scale-100 top-[49px] " : "opacity-0 scale-90 top-[-600px] "}`}>
                 <div className="w-full h-0.5 bg-slate-200 mt-1 dark:bg-gray-800"></div>
 
                 <div className="w-[80%] rounded-xl bg-slate-50 mx-auto my-4 relative border-2 border-slate-300 dark:border-gray-700 flex items-center transition-all">
                     <button type="button" className={`flex text-gray-700  items-center rounded-l-lg hover:bg-amber-500 justify-center gap-2 p-1 w-1/2 ${mediaOption === 'photo' && 'bg-amber-400'} transition-all hover:opacity-100`} onClick={() => setMediaOption('photo')}>
                         <IoImage />
-                        <span>Photo</span>
+                        <span>photo</span>
                     </button>
                     <div className="h-full bg-slate-400 w-0.5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                    <button type="button" className={`flex text-gray-700  items-center rounded-r-lg hover:bg-amber-500 justify-center gap-2 p-1 w-1/2  transition-all hover:opacity-100 ${mediaOption === 'videos' && 'bg-amber-400'}`} onClick={() => setMediaOption('videos')} >
+                    <button type="button" className={`flex text-gray-700  items-center rounded-r-lg hover:bg-amber-500 justify-center gap-2 p-1 w-1/2  transition-all hover:opacity-100 ${mediaOption === 'video' && 'bg-amber-400'}`} onClick={() => setMediaOption('video')} >
                         <IoVideocam />
-                        <span>Videos</span>
+                        <span>video</span>
                     </button>
                 </div>
                 <div className="w-full h-0.5 bg-slate-200 mt-1 dark:bg-gray-800" ></div>
