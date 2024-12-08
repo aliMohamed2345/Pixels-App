@@ -10,14 +10,12 @@ interface PictureProps {
     height: number;
     alt: string;
     src: string;
-    user: string;
-    userId: number;
-    userImageURL: string;
     imageId: string;
     tags: string;
+    type: string
 }
 
-const Picture = ({ width, height, src, alt, user, userId, userImageURL, imageId, tags }: PictureProps) => {
+const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps) => {
     const [isFavorite, setIsFavorite] = useState(false);
 
     return (
@@ -44,28 +42,9 @@ const Picture = ({ width, height, src, alt, user, userId, userImageURL, imageId,
                 className={`absolute inset-0 bg-black/50 transition-opacity opacity-0 hover:opacity-100 rounded-md`}
             >
                 {/* Navigate to photo details */}
-                <Link href={{ pathname: `/photos/${imageId}`, query: { imageId, tags } }} className="absolute inset-0">
+                <Link href={{ pathname: `/photos/${imageId}`, query: { imageId, tags, type, width, height, src } }} className="absolute inset-0">
                     <span className="sr-only">View Photo</span>
                 </Link>
-
-                {/* User details link */}
-                <div className="flex items-center justify-between absolute bottom-2 w-full px-3 text-white">
-                    <Link href={{ pathname: `/photos/user/${user}`, query: { userId, user } }}>
-                        <p className="text-md hover:underline">{user}</p>
-                    </Link>
-                    {userImageURL && (
-                        <Link href={{ pathname: `/photos/user/${user}`, query: { userId, user } }}>
-                            <Image
-                                src={userImageURL}
-                                alt={user}
-                                width={40}
-                                height={40}
-                                className="rounded-full hover:scale-[1.2] transition-all"
-                            />
-                        </Link>
-                    )}
-                </div>
-
                 {/* Favorite button */}
                 <button
                     type="button"

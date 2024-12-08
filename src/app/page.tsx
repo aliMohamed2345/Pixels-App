@@ -3,10 +3,6 @@ import Link from 'next/link';
 import waterfall from '../../public/avenue-815297_1920.jpg'
 export default function Home() {
 
-  function fetchData(link: string) {
-    fetch(link).then(res => res.json()).then(data => console.log(data.hits));
-  }
-  fetchData(`${process.env.NEXT_PUBLIC_PHOTOS_API}?key=${process.env.NEXT_PUBLIC_PHOTOS_API_KEY}&id=9226515`);
   return (<>
     <div
       className={`relative w-full h-screen flex items-center justify-center text-center bg-gray-800 text-white bg-cover bg-center`} style={{ backgroundImage: `url(${waterfall.src})` }}>

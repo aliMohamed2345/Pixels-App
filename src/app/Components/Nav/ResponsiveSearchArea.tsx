@@ -12,7 +12,6 @@ const ResponsiveSearchArea = () => {
     const [searchValues, setSearchValues] = useState<string[]>([]);
     const [mediaOption, setMediaOption] = useState<string>("photo")
     const router = useRouter();
-console.log(mediaOption)
     useEffect(() => {
         // Load stored search values from localStorage
         const storedValues = JSON.parse(localStorage.getItem("search-values") || "[]");
