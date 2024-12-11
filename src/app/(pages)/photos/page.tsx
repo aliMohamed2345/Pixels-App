@@ -109,7 +109,7 @@ export default function Home() {
                             <button onClick={() => { handlePhotoOrder('latest') }} type="button" className="font-bold text-secondary_text_color  p-4 w-full rounded-full">latest</button>
                             <button onClick={() => { handlePhotoOrder('popular') }} type="button" className="font-bold text-secondary_text_color p-4 w-full rounded-full">popular</button>
                         </div>
-                        <FilterWindow />
+                        <FilterWindow pathName='/photos' />
                     </div>
                     <div className="flex items-center gap-2 mx-auto">
                         <MdKeyboardArrowLeft onClick={() => scrollHorizontally(-100)} className='text-sm cursor-pointer rounded-full transition-all text-text_color hover:bg-background_hover w-6 h-6' />
@@ -127,7 +127,7 @@ export default function Home() {
             <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-2 place-items-center">
                 {dataPhotos.filter((photo) => photo?.webformatURL?.trim() !== "").map((photo, i) => {
                     const { tags, id, webformatHeight, webformatURL, webformatWidth, type } = photo;
-                    return (<Picture key={i} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags} tags={tags} type={type} />);
+                    return (<Picture key={i} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags.split(', ')[0]} tags={tags} type={type} />);
                 })}
             </div>
 
@@ -135,7 +135,6 @@ export default function Home() {
             {isLoading && <Loading numberOfLoadingItems={8} />}
 
             {/* Intersection observer target */}
-            <div ref={observerRef} className="h-4" />
-        </div >
+            <div ref={observerRef} className="h-4" /></div >
     );
 }

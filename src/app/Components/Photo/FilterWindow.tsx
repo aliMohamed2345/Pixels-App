@@ -5,23 +5,23 @@ import { MdClose } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import DropdownMenu from "../Home/DropDownMenu";
 import Link from "next/link";
-interface filterDataProps {
+export interface filterDataProps {
     imageTypes: string,
     orientation: string,
-    color: string
+    color?: string
 }
-const InitialfilterData: filterDataProps = {
+export const InitialFilterData: filterDataProps = {
     imageTypes: "",
     orientation: "",
     color: ""
 }
-const FilterWindow = () => {
+const FilterWindow = ({ pathName ,searchQuery =""}: { pathName: string ,searchQuery?:string }) => {
     const imageTypes = ["all", "photo", "illustration", "vector"];
     const orientation = ["all", "horizontal", "vertical"];
     const colors = ["red", "orange", "yellow", "green", "turquoise", "blue", "pink", "white", "gray", "black", "brown"]
     const [currentColor, setCurrentColor] = useState<string>("")
     const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-    const [filterData, setFilterData] = useState<filterDataProps>(InitialfilterData);
+    const [filterData, setFilterData] = useState<filterDataProps>(InitialFilterData);
 
     const handleDropdownChange = (key: keyof filterDataProps, value: string) => {
         setFilterData((prev) => ({ ...prev, [key]: value }));
@@ -78,7 +78,7 @@ const FilterWindow = () => {
                             <button className="w-8 h-8 rounded-full" onClick={() => handleColorSelecting(color)} title={color} style={{ backgroundColor: `${color}` }} ></button>
                         </div>))}
                 </div>
-                <Link onClick={() => setIsFilterOpen(false)} className="w-5/6 p-2 rounded-md bg-secondary hover:bg-background_hover transition-all m-auto mb-12 block text-center" href={{ pathname: `/photos`, query: { color: filterData.color, orientation: filterData.orientation, imageType: filterData.imageTypes } }}> Apply</Link>
+                <Link onClick={() => setIsFilterOpen(false)} className="w-5/6 p-2 rounded-md bg-secondary hover:bg-background_hover transition-all m-auto mb-12 block text-center" href={{ pathname: `${pathName}`, query: { color: filterData.color, orientation: filterData.orientation, imageType: filterData.imageTypes ,q:`${searchQuery}`} }}> Apply</Link>
             </div >
         </>
     );

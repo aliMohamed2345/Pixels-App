@@ -42,7 +42,7 @@ const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps)
                 className={`absolute inset-0 bg-black/50 transition-opacity opacity-0 hover:opacity-100 rounded-md`}
             >
                 {/* Navigate to photo details */}
-                <Link href={{ pathname: `/photos/${imageId}`, query: { imageId, tags, type, width, height, src } }} className="absolute inset-0">
+                <Link href={{ pathname: `/photos/${tags.split(', ')[0]}`, query: { imageId, tags, type, width, height, src } }} className="absolute inset-0">
                     <span className="sr-only">View Photo</span>
                 </Link>
                 {/* Favorite button */}
