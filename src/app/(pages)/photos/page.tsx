@@ -43,7 +43,6 @@ export default function Home() {
                 `${process.env.NEXT_PUBLIC_PHOTOS_API}?key=${process.env.NEXT_PUBLIC_PHOTOS_API_KEY}&page=${currentPage}&order=${photoOrder}&safesearch=true${orientation && '&orientation=' + orientation}${imageType && '&image_type=' + imageType}${color && '&colors=' + color}`
             );
             const data = await response.json();
-
             // Remove duplicates based on unique `id`
             setDataPhotos((prevPhotos) => {
                 const allPhotos = [...prevPhotos, ...data.hits];
@@ -130,7 +129,7 @@ export default function Home() {
             <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-2 place-items-center">
                 {dataPhotos.filter((photo) => photo?.webformatURL?.trim() !== "").map((photo, i) => {
                     const { tags, id, webformatHeight, webformatURL, webformatWidth, type } = photo;
-                    return (<Picture key={i} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags.split(', ')[0]} tags={tags} type={type} />);
+                    return (<Picture Favorite={true} key={i} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags.split(', ')[0]} tags={tags} type={type} />);
                 })}
             </div>
 

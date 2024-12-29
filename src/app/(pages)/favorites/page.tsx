@@ -68,7 +68,7 @@ const Favorite = () => {
         {currentMedia === 'photos' && favoritePhotos.length &&
             <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-2 place-items-center">
                 {favoritePhotos.map((photo, i) => {
-                    const { tags, imageId, width, height, src, type } = photo;
+                    const { tags, imageId, width, height, src, type ,Favorite} = photo;
                     return (
                         <Picture
                             key={i}
@@ -79,6 +79,7 @@ const Favorite = () => {
                             alt={tags?.split(', ')[0] || "Favorite photo"}
                             tags={tags}
                             type={type}
+                            Favorite={Favorite}
                         />
                     );
                 })}

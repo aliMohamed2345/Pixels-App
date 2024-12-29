@@ -9,10 +9,27 @@ import { FaRegClipboard } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 import { photoDataProps } from "../page";
 import Picture from "@/app/Components/Photo/Picture";
+import { PictureProps } from "@/app/Components/Photo/Picture";
 const PhotoId = () => {
-    const { imageId, tags, type, width, height, src } = Object.fromEntries(useSearchParams().entries())
+    const { imageId, tags, type, width, height, src, alt, Favorite } = Object.fromEntries(useSearchParams().entries())
     const [filteredData, setFilteredData] = useState<photoDataProps[]>([])
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFavorite, setIsFavorite] = useState<boolean>(Boolean(Favorite));
+    function handleFavoriteBtn(id: number) {
+        setIsFavorite(prev => !prev);
+        let previousPhotos: PictureProps[] = [];
+        const storedPhotos = localStorage.getItem('favorite-photos');
+        previousPhotos = storedPhotos ? JSON.parse(storedPhotos) : [];
+        if (isFavorite) {
+            // Add photo to favorites
+            const currentPhoto = { width, height, src, alt, imageId, type, tags, isFavorite };
+            const newPhotos = [...previousPhotos, currentPhoto];
+            localStorage.setItem('favorite-photos', JSON.stringify(newPhotos));
+        } else {
+            // Remove photo from favorites
+            const updatedPhotos = previousPhotos.filter(photo => String(photo.imageId) !== String(id));
+            localStorage.setItem('favorite-photos', JSON.stringify(updatedPhotos));
+        }
+    }
 
     useEffect(() => {
         const filterData = () => {
@@ -43,10 +60,7 @@ const PhotoId = () => {
                     <p>height : {height}px</p>
                     <div className="flex gap-3 items-center justify-center">
                         <button onClick={() => handleDownload(src, `${tags.split(', ')[0]} image from pixels`)} className="rounded-full flex-1 p-3 bg-green-500 text-white text-center transition-all font-bold hover:scale-105">download</button>
-                        {/* <button type="button" className="text-2xl bg-red text-rose-500 hover:bg-background_hover transition-all rounded-full p-1" onClick={(e) => { e.preventDefault(); setIsFavorite((prev) => !prev); }} >
-                            {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
-                        </button> */}
-                        <button onClick={(e) => { e.preventDefault(); setIsFavorite((prev) => !prev); }} type="button" title="favorite" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl bg-red text-rose-500 hover:bg-background_hover transition-all rounded-full p-1" aria-describedby="tooltip-05">
+                        <button onClick={() => { handleFavoriteBtn(+imageId) }} type="button" title="favorite" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl bg-red text-rose-500 hover:bg-background_hover transition-all rounded-full p-1" aria-describedby="tooltip-05">
                             {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
                             <span className="invisible absolute bottom-full left-1/2 z-10 mb-2 w-auto -translate-x-1/2 rounded bg-green-500 text-secondary p-2 text-xs text-white opacity-0 transition-all before:invisible  group-hover:visible group-hover:block group-hover:opacity-100 group-hover:before:visible group-hover:before:opacity-100">Favorite</span>
                         </button>
@@ -62,7 +76,7 @@ const PhotoId = () => {
                 <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-2 place-items-center">
                     {filteredData.map((photo, i) => {
                         const { tags, id, webformatHeight, webformatURL, webformatWidth, type } = photo
-                        return (<Picture key={i} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags} tags={tags} type={type} />)
+                        return (<Picture key={i} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags} tags={tags} type={type} Favorite={true} />)
                     })}
                 </div>
             </div>

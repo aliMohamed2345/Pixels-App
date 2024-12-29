@@ -122,7 +122,7 @@ function Videos() {
                 {dataVideos.filter((video) => video.videos.small.url.trim() !== "").map((video, i) => {
                     const { tags, id, type, duration } = video;
                     const { width, height, url, thumbnail } = video.videos.tiny
-                    return (<Video videos={video.videos} key={i} thumbnailSrc={thumbnail} width={width} duration={duration} height={height} src={url} videoId={id} tags={tags} type={type} alt={tags.split(', ')[0]} />);
+                    return (<Video Favorite={true} videos={video.videos} key={i} thumbnailSrc={thumbnail} width={width} duration={duration} height={height} src={url} videoId={id} tags={tags} type={type} alt={tags.split(', ')[0]} />);
                 })}
             </div>
 

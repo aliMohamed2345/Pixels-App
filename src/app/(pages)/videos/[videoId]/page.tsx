@@ -10,36 +10,53 @@ import Video from "@/app/Components/Video/Video";
 import DownloadVideos from "@/app/Components/Video/DownloadVideos";
 import ResponsiveDownloadVideos from "@/app/Components/Video/ResponsiveDownloadVideos";
 import { getDuration } from "@/app/utils/getDuration";
-
+import { VideoProps } from "@/app/Components/Video/Video";
 
 const VideoId = () => {
-    const { tags, type, width, height, src, duration } = Object.fromEntries(useSearchParams().entries())
+    const { tags, type, width, height, src, duration, alt, thumbnailSrc, videoId, Favorite } = Object.fromEntries(useSearchParams().entries())
     const videos = useSearchParams().get('videos')
     const videosData = JSON.parse(videos ?? "")
     const [filteredData, setFilteredData] = useState<videoDataProps[]>([])
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(Boolean(Favorite));
+
+    function handleFavoriteVideoBtn(id: number) {
+        setIsFavorite(prev => !prev);
+        let previousVideos: VideoProps[] = [];
+        const storedVideos = localStorage.getItem('favorite-videos');
+        previousVideos = storedVideos ? JSON.parse(storedVideos) : [];
+        if (isFavorite) {
+            // Add photo to favorites
+            const currentVideo = { width, height, src, alt, duration, thumbnailSrc, videos, type, tags, videoId };
+            const newVideo = [...previousVideos, currentVideo];
+            localStorage.setItem('favorite-videos', JSON.stringify(newVideo));
+        } else {
+            // Remove photo from favorites
+            const updatedVideos = previousVideos.filter(video => String(video.videoId) !== String(id));
+            localStorage.setItem('favorite-videos', JSON.stringify(updatedVideos));
+        }
+    }
 
     useEffect(() => {
         const filterData = async () => {
             try {
                 const apiUrl = `${process.env.NEXT_PUBLIC_VIDEOS_API}?key=${process.env.NEXT_PUBLIC_VIDEOS_API_KEY}&safesearch=true`;
                 const filteredLink = `${apiUrl}&q=${encodeURIComponent(tags.split(', ').join(' '))}`;
-                
+
                 const res = await fetch(filteredLink);
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status} - ${await res.text()}`);
                 }
-    
+
                 const data = await res.json();
                 setFilteredData(data.hits || []);
             } catch {
                 console.error("Error fetching data");
             }
         };
-    
+
         filterData();
     }, [tags]);
-    
+
     return (
         <div className="flex gap-3 flex-col">
             <div className='pt-20 flex flex-col lg:flex-row container mx-auto px-5 items-center justify-around gap-3 '>
@@ -57,7 +74,7 @@ const VideoId = () => {
                     <p>duration : {getDuration(+duration)}</p>
                     <div className="flex gap-3 items-center relative justify-center flex-col sm:flex-row md:flex-row">
                         <div className="flex flex-between items-center gap-5">
-                            <button onClick={(e) => { e.preventDefault(); setIsFavorite((prev) => !prev); }} type="button" title="favorite" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl bg-red text-rose-500 hover:bg-background_hover transition-all rounded-full p-1" aria-describedby="tooltip-05">
+                            <button onClick={() => { handleFavoriteVideoBtn(+videoId) }} type="button" title="favorite" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl bg-red text-rose-500 hover:bg-background_hover transition-all rounded-full p-1" aria-describedby="tooltip-05">
                                 {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
                                 <span className="invisible absolute bottom-full left-1/2 z-10 mb-2 w-auto -translate-x-1/2 rounded bg-green-500 text-secondary p-2 text-xs text-white opacity-0 transition-all before:invisible  group-hover:visible group-hover:block group-hover:opacity-100 group-hover:before:visible group-hover:before:opacity-100">Favorite</span>
                             </button>
@@ -81,7 +98,7 @@ const VideoId = () => {
                     {filteredData.map((video, i) => {
                         const { tags, id, type, duration } = video;
                         const { width, height, url, thumbnail } = video.videos.tiny
-                        return (<Video videos={video.videos} key={i} width={+width} height={+height} src={url} videoId={+id} alt={tags} tags={tags} type={type} duration={+duration} thumbnailSrc={thumbnail}  />)
+                        return (<Video Favorite={true} videos={video.videos} key={i} width={+width} height={+height} src={url} videoId={+id} alt={tags} tags={tags} type={type} duration={+duration} thumbnailSrc={thumbnail} />)
                     })}
                 </div>
             </div>

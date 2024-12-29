@@ -12,10 +12,11 @@ export interface PictureProps {
     src: string;
     imageId: string;
     tags: string;
-    type: string
+    type: string;
+    Favorite:boolean
 }
-const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps) => {
-    const [isFavorite, setIsFavorite] = useState(true);
+const Picture = ({ width, type, height, src, alt, imageId, tags ,Favorite}: PictureProps) => {
+    const [isFavorite, setIsFavorite] = useState(Favorite);
     function handleFavoriteBtn(id: number) {
         setIsFavorite(prev => !prev);
         let previousPhotos: PictureProps[] = [];
@@ -23,7 +24,7 @@ const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps)
         previousPhotos = storedPhotos ? JSON.parse(storedPhotos) : [];
         if (isFavorite) {
             // Add photo to favorites
-            const currentPhoto = { width, height, src, alt, imageId, type, tags };
+            const currentPhoto = { width, height, src, alt, imageId, type, tags ,isFavorite};
             const newPhotos = [...previousPhotos, currentPhoto];
             localStorage.setItem('favorite-photos', JSON.stringify(newPhotos));
         } else {
@@ -56,7 +57,7 @@ const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps)
                 className={`absolute inset-0 bg-black/50 transition-opacity opacity-0 hover:opacity-100 rounded-md`}
             >
                 {/* Navigate to photo details */}
-                <Link href={{ pathname: `/photos/${tags.split(', ')[0]}`, query: { imageId, tags, type, width, height, src } }} className="absolute inset-0">
+                <Link href={{ pathname: `/photos/${tags.split(', ')[0]}`, query: { imageId, tags, type, width, height, src,alt,Favorite:+isFavorite } }} className="absolute inset-0">
                     <span className="sr-only">View Photo</span>
                 </Link>
                 {/* Favorite button */}

@@ -15,11 +15,12 @@ export interface VideoProps {
     duration: number;
     thumbnailSrc: string;
     alt: string;
-    videos:VideosProps
+    videos: VideosProps;
+    Favorite: boolean;
 }
 
-const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc , videos,videoId }: VideoProps) => {
-    const [isFavorite, setIsFavorite] = useState(true);
+const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc, videos, videoId, Favorite }: VideoProps) => {
+    const [isFavorite, setIsFavorite] = useState(Favorite);
     const [isPlayed, setIsPlayed] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const handleMouseEnter = () => {
@@ -36,22 +37,23 @@ const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc , v
             videoRef.current.pause();
         }
     };
-        function handleFavoriteVideoBtn(id: number) {
-            setIsFavorite(prev => !prev);
-            let previousVideos: VideoProps[] = [];
-            const storedVideos = localStorage.getItem('favorite-videos');
-            previousVideos = storedVideos ? JSON.parse(storedVideos) : [];
-            if (isFavorite) {
-                // Add photo to favorites
-                const currentVideo = { width, height, src, alt,duration,thumbnailSrc,videos, type, tags,videoId };
-                const newVideo = [...previousVideos, currentVideo];
-                localStorage.setItem('favorite-videos', JSON.stringify(newVideo));
-            } else {
-                // Remove photo from favorites
-                const updatedVideos = previousVideos.filter(video => String(video.videoId) !== String(id));
-                localStorage.setItem('favorite-videos', JSON.stringify(updatedVideos));
-            }
+    function handleFavoriteVideoBtn(id: number) {
+        setIsFavorite(prev => !prev);
+        console.log(isFavorite)
+        let previousVideos: VideoProps[] = [];
+        const storedVideos = localStorage.getItem('favorite-videos');
+        previousVideos = storedVideos ? JSON.parse(storedVideos) : [];
+        if (isFavorite) {
+            // Add photo to favorites
+            const currentVideo = { width, height, src, alt, duration, thumbnailSrc, videos, type, tags, videoId };
+            const newVideo = [...previousVideos, currentVideo];
+            localStorage.setItem('favorite-videos', JSON.stringify(newVideo));
+        } else {
+            // Remove photo from favorites
+            const updatedVideos = previousVideos.filter(video => String(video.videoId) !== String(id));
+            localStorage.setItem('favorite-videos', JSON.stringify(updatedVideos));
         }
+    }
 
     return (
         <div className="relative mb-2">
@@ -77,7 +79,7 @@ const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc , v
                 <Link
                     href={{
                         pathname: `/videos/${tags.split(", ")[0]}`,
-                        query: { tags, type, width, height, src, duration,videos:JSON.stringify(videos) },
+                        query: { tags, alt,thumbnailSrc,videoId,type, width, height, src, duration, videos: JSON.stringify(videos) ,Favorite:+isFavorite},
                     }}
                     className="absolute inset-0"
                 >
