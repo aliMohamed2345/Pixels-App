@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from "react";
 import { IoMdSearch } from "react-icons/io";
-import { IoImage, IoVideocam } from "react-icons/io5";
+import { IoClose, IoImage, IoVideocam } from "react-icons/io5";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,9 +16,27 @@ const SearchArea = () => {
     const router = useRouter();
     // Load stored values from localStorage on mount
     useEffect(() => {
-        //this condition for showing only the last 4 elements in which if the length of the localStorage is greater than 4 it will only cut the last 4 elements
-        const storedValues = JSON.parse(localStorage.getItem("search-values") || "[]");
-        setSearchValues(storedValues.length > 3 ? storedValues.slice(-4) : storedValues);
+        try {
+            const storedValues = localStorage.getItem("search-values");
+            //this code to store the value of search in local storage variable that contain an array of 4 element 
+            if (storedValues) {
+                // Try parsing the stored values
+                const parsedValues = JSON.parse(storedValues);
+                // Ensure the parsed data is an array
+                if (Array.isArray(parsedValues)) {
+                    setSearchValues(parsedValues.length > 3 ? parsedValues.slice(-4) : parsedValues);
+                } else {
+                    localStorage.setItem("search-values", JSON.stringify([]));
+                    setSearchValues([]);
+                }
+            } else {
+                setSearchValues([]);
+            }
+        } catch (error) {
+            console.error("Failed to parse search-values from localStorage:", error);
+            localStorage.setItem("search-values", JSON.stringify([]));
+            setSearchValues([]);
+        }
     }, []);
 
     // Close the search area when clicking outside
@@ -47,7 +65,12 @@ const SearchArea = () => {
             e.preventDefault();
         }
     };
-
+    const handleRemoveSearchValue = (value: string) => {
+        const storedValues: string[] = JSON.parse(localStorage.getItem("search-values") || "[]");
+        const newSearchValue = storedValues.filter((val: string) => val !== value)
+        localStorage.setItem('search-values', JSON.stringify(newSearchValue));
+        setSearchValues(newSearchValue)
+    }
     return (
         <div ref={searchAreaRef}>
             <div
@@ -85,19 +108,22 @@ const SearchArea = () => {
                 </div>
                 <div className="w-full h-0.5 bg-slate-200 mt-1 dark:bg-gray-800" ></div>
                 <div className="p-3">
-                    <ul className="flex content-start gap-2 w-full flex-col">
+                    <div className="flex content-start gap-2 w-full flex-col">
                         {searchValues.slice(-4).reverse().map((value, i) => (
                             <Link
                                 key={i}
                                 href={{ pathname: `/search/${mediaOption}s/${value}`, query: { q: value } }}
                                 className="p-3 rounded-md hover:bg-background_hover hover:opacity-100 transition-all text-text_color"
                             >
-                                <li className="flex content-start gap-2 w-full items-center">
-                                    <FaClockRotateLeft /> {value}
-                                </li>
+                                <div className="flex items-center justify-between">
+                                    <span className="flex content-start gap-2 w-full items-center">
+                                        <FaClockRotateLeft /> {value}
+                                    </span>
+                                    <IoClose onClick={() => handleRemoveSearchValue(value)} className=" text-text_color hover:bg-secondary transition-all rounded-full" />
+                                </div>
                             </Link>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div >

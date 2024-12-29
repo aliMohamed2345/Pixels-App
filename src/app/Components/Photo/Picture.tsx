@@ -5,7 +5,7 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import Image from "next/image";
 import { useState } from "react";
 
-interface PictureProps {
+export interface PictureProps {
     width: number;
     height: number;
     alt: string;
@@ -14,10 +14,24 @@ interface PictureProps {
     tags: string;
     type: string
 }
-
 const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps) => {
-    const [isFavorite, setIsFavorite] = useState(false);
-
+    const [isFavorite, setIsFavorite] = useState(true);
+    function handleFavoriteBtn(id: number) {
+        setIsFavorite(prev => !prev);
+        let previousPhotos: PictureProps[] = [];
+        const storedPhotos = localStorage.getItem('favorite-photos');
+        previousPhotos = storedPhotos ? JSON.parse(storedPhotos) : [];
+        if (isFavorite) {
+            // Add photo to favorites
+            const currentPhoto = { width, height, src, alt, imageId, type, tags };
+            const newPhotos = [...previousPhotos, currentPhoto];
+            localStorage.setItem('favorite-photos', JSON.stringify(newPhotos));
+        } else {
+            // Remove photo from favorites
+            const updatedPhotos = previousPhotos.filter(photo => String(photo.imageId) !== String(id));
+            localStorage.setItem('favorite-photos', JSON.stringify(updatedPhotos));
+        }
+    }
     return (
         <div
             className="relative mb-2">
@@ -32,7 +46,7 @@ const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps)
                     className="rounded-md"
                 />
             ) : (
-                <div className="bg-gray-200 w-full h-full flex items-center justify-center">
+                <div className={`w-[${width}] h-[${height}] bg-gray-200 w-full h-full flex items-center justify-center`}>
                     <p className="text-gray-500">No Image Available</p>
                 </div>
             )}
@@ -49,12 +63,9 @@ const Picture = ({ width, type, height, src, alt, imageId, tags }: PictureProps)
                 <button
                     type="button"
                     className="absolute top-2 left-2 text-2xl text-rose-500 transition-opacity hover:bg-gray-400 hover:opacity-80 rounded-full p-1"
-                    onClick={(e) => {
-                        e.preventDefault(); // Prevent navigation if the button is clicked
-                        setIsFavorite((prev) => !prev);
-                    }}
+                    onClick={() => { handleFavoriteBtn(+imageId) }}
                 >
-                    {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                    {isFavorite ? <IoMdHeartEmpty /> : <IoMdHeart />}
                 </button>
             </div>
         </div>

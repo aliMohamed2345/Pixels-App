@@ -5,7 +5,7 @@ import { FaClockRotateLeft } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { IoArrowBackSharp, IoImage, IoVideocam } from "react-icons/io5";
 import { useRouter } from 'next/navigation';
-
+import { IoClose } from "react-icons/io5";
 const ResponsiveSearchArea = () => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [openSearch, setOpenSearch] = useState<boolean>(false)
@@ -33,6 +33,12 @@ const ResponsiveSearchArea = () => {
             e.preventDefault();
         }
     };
+    const handleRemoveSearchValue = (value: string) => {
+        const storedValues: string[] = JSON.parse(localStorage.getItem("search-values") || "[]");
+        const newSearchValue = storedValues.filter((val: string) => val !== value)
+        localStorage.setItem('search-values', JSON.stringify(newSearchValue));
+        setSearchValues(newSearchValue)
+    }
 
     return (
         <>
@@ -71,19 +77,22 @@ const ResponsiveSearchArea = () => {
                         </button>
                     </div>
                     <div className="h-px w-full bg-gray-400 relative my-4"></div>
-                    <ul className="ml-3">
+                    <div className="ml-3">
                         {searchValues.slice(-4).reverse().map((value, i) => (
                             <Link
                                 key={i}
                                 href={{ pathname: `/search/${mediaOption}s/${value}`, query: { q: value } }}
-                                className="p-2 rounded-md hover:opacity-100 transition-all text-text_color"
+                                className="p-3 rounded-md transition-all text-text_color"
                             >
-                                <li className="flex content-start gap-3 w-full items-center">
-                                    <FaClockRotateLeft /> {value}
-                                </li>
+                                <div className="flex items-center justify-between">
+                                    <span className="flex content-start gap-2 w-full items-center">
+                                        <FaClockRotateLeft /> {value}
+                                    </span>
+                                    <IoClose onClick={() => handleRemoveSearchValue(value)} className=" text-text_color hover:bg-secondary transition-all rounded-full" />
+                                </div>
                             </Link>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             }
         </>

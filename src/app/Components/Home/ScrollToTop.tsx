@@ -6,7 +6,12 @@ const ScrollToTop = () => {
     const [isIconVisible, setIsIconVisible] = useState(false);
 
     const handleScroll = () => {
-        (window.scrollY >= 200 ? setIsIconVisible(true) : setIsIconVisible(false));
+        if (window.scrollY >= 200) {
+            setIsIconVisible(true)
+        }
+        else {
+            setIsIconVisible(false)
+        }
     };
 
     useEffect(() => {

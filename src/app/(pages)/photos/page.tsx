@@ -32,7 +32,10 @@ export default function Home() {
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [photoOrder, setPhotoOrder] = useState<string>('popular');
     const categories = ["backgrounds", "fashion", "nature", "science", "education", "feelings", "health", "people", "religion", "places", "animals", "industry", "computer", "food", "sports", "transportation", "travel", "buildings", "business", "music"];
-    const { color = "", orientation = "", imageType = "" } = Object.fromEntries(useSearchParams().entries());
+    const searchParams = useSearchParams();
+    const color = searchParams?.get('color') || ""
+    const orientation = searchParams?.get('orientation') || ""
+    const imageType = searchParams?.get('imageType') || ""
     const fetchPhotos = useCallback(async (currentPage: number) => {
         try {
             setIsLoading(true);
