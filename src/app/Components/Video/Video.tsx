@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { VideosProps } from "@/app/(pages)/videos/page";
 
 export interface VideoProps {
@@ -23,6 +23,16 @@ const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc, vi
     const [isFavorite, setIsFavorite] = useState(Favorite);
     const [isPlayed, setIsPlayed] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        // Check if the current videoId exists in localStorage
+        const storedVideos = localStorage.getItem('favorite-videos');
+        const parsedVideos: VideoProps[] = storedVideos ? JSON.parse(storedVideos) : [];
+
+        const isVideoFavorite = parsedVideos.some(video => video.videoId === videoId);
+        setIsFavorite(isVideoFavorite);
+    }, [videoId]);
+
     const handleMouseEnter = () => {
         setIsPlayed(true);
         if (videoRef.current) {
@@ -37,23 +47,24 @@ const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc, vi
             videoRef.current.pause();
         }
     };
-    function handleFavoriteVideoBtn(id: number) {
+
+    const handleFavoriteVideoBtn = (id: number) => {
         setIsFavorite(prev => !prev);
-        console.log(isFavorite)
         let previousVideos: VideoProps[] = [];
         const storedVideos = localStorage.getItem('favorite-videos');
         previousVideos = storedVideos ? JSON.parse(storedVideos) : [];
+
         if (isFavorite) {
-            // Add photo to favorites
+            // Remove video from favorites
+            const updatedVideos = previousVideos.filter(video => video.videoId !== id);
+            localStorage.setItem('favorite-videos', JSON.stringify(updatedVideos));
+        } else {
+            // Add video to favorites
             const currentVideo = { width, height, src, alt, duration, thumbnailSrc, videos, type, tags, videoId };
             const newVideo = [...previousVideos, currentVideo];
             localStorage.setItem('favorite-videos', JSON.stringify(newVideo));
-        } else {
-            // Remove photo from favorites
-            const updatedVideos = previousVideos.filter(video => String(video.videoId) !== String(id));
-            localStorage.setItem('favorite-videos', JSON.stringify(updatedVideos));
         }
-    }
+    };
 
     return (
         <div className="relative mb-2">
@@ -75,28 +86,26 @@ const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc, vi
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                {/* Navigate to photo details */}
+                {/* Navigate to video details */}
                 <Link
                     href={{
                         pathname: `/videos/${tags.split(", ")[0]}`,
-                        query: { tags, alt,thumbnailSrc,videoId,type, width, height, src, duration, videos: JSON.stringify(videos) ,Favorite:+isFavorite},
+                        query: { tags, alt, thumbnailSrc, videoId, type, width, height, src, duration, videos: JSON.stringify(videos), Favorite: +isFavorite },
                     }}
                     className="absolute inset-0"
                 >
-                    <span className="sr-only">View Photo</span>
+                    <span className="sr-only">View Video</span>
                 </Link>
                 {/* Favorite button */}
                 <button
                     type="button"
                     className="absolute top-2 left-2 text-2xl text-rose-500 transition-opacity hover:bg-gray-400 hover:opacity-80 rounded-full p-1"
-                    onClick={() => {
-                        handleFavoriteVideoBtn(videoId)
-                    }}
+                    onClick={() => handleFavoriteVideoBtn(videoId)}
                 >
-                    {isFavorite ? <IoMdHeartEmpty /> : <IoMdHeart />}
+                    {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
                 </button>
             </div>
-        </div >
+        </div>
     );
 };
 

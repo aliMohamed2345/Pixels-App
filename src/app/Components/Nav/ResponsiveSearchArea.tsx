@@ -45,7 +45,7 @@ const ResponsiveSearchArea = () => {
             <IoMdSearch size={30} className={`block rounded-full p-1 transition-all md:hidden lg-hidden hover:bg-background_hover text-text_color opacity-90 hover:opacity-100`} onClick={() => setOpenSearch(true)} />
 
             {openSearch &&
-                <div className={`inset-0 bg-secondary flex-col w-full h-full absolute z-10`}>
+                <div className={` bg-secondary w-full h-[850px] inset-0 absolute `}>
                     <div className="flex items-center gap-2 mt-2">
                         <button
                             onClick={() => setOpenSearch(false)}
@@ -77,15 +77,11 @@ const ResponsiveSearchArea = () => {
                         </button>
                     </div>
                     <div className="h-px w-full bg-gray-400 relative my-4"></div>
-                    <div className="ml-3">
+                    <div className="mx-3">
                         {searchValues.slice(-4).reverse().map((value, i) => (
-                            <Link
-                                key={i}
-                                href={{ pathname: `/search/${mediaOption}s/${value}`, query: { q: value } }}
-                                className="p-3 rounded-md transition-all text-text_color"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <span className="flex content-start gap-2 w-full items-center">
+                            <Link key={i} href={{ pathname: `/search/${mediaOption}s/${value}`, query: { q: value } }} className="p-3 rounded-md transition-all text-text_color" >
+                                <div className="flex items-center justify-between gap-4">
+                                    <span className="flex content-start gap-2  items-center">
                                         <FaClockRotateLeft /> {value}
                                     </span>
                                     <IoClose onClick={() => handleRemoveSearchValue(value)} className=" text-text_color hover:bg-secondary transition-all rounded-full" />

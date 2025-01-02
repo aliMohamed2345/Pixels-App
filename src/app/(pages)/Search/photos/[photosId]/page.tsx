@@ -77,7 +77,7 @@ const PhotoId = () => {
                         {searchedData.map((photo) => {
                             const { tags, id, webformatHeight, webformatURL, webformatWidth, type } = photo;
                             return (
-                                <Picture key={id} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags.split(', ')[0]} tags={tags} type={type} />
+                                <Picture key={id} width={webformatWidth} height={webformatHeight} src={webformatURL} imageId={id} alt={tags.split(', ')[0]} tags={tags} type={type} Favorite={true} />
                             );
                         })}
                     </div>

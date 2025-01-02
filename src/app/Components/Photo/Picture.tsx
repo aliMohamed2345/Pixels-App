@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export interface PictureProps {
     width: number;
@@ -13,29 +13,47 @@ export interface PictureProps {
     imageId: string;
     tags: string;
     type: string;
-    Favorite:boolean
+    Favorite: boolean;
 }
-const Picture = ({ width, type, height, src, alt, imageId, tags ,Favorite}: PictureProps) => {
+
+const Picture = ({ width, type, height, src, alt, imageId, tags, Favorite }: PictureProps) => {
     const [isFavorite, setIsFavorite] = useState(Favorite);
-    function handleFavoriteBtn(id: number) {
-        setIsFavorite(prev => !prev);
+
+    // Effect to check if the image is already in the favorites from localStorage
+    useEffect(() => {
+        const storedPhotos = localStorage.getItem('favorite-photos');
+        const previousPhotos: PictureProps[] = storedPhotos ? JSON.parse(storedPhotos) : [];
+
+        // Check if the current photo is already in favorites
+        const isAlreadyFavorite = previousPhotos.some(photo => photo.imageId === imageId);
+        setIsFavorite(isAlreadyFavorite);
+    }, [imageId]);
+
+    // Handle the favorite button click
+    const handleFavoriteBtn = () => {
+        // Toggle the favorite state
+        const newFavoriteState = !isFavorite;
+        setIsFavorite(newFavoriteState);
+
+        // Get the existing favorite photos from localStorage
         let previousPhotos: PictureProps[] = [];
         const storedPhotos = localStorage.getItem('favorite-photos');
         previousPhotos = storedPhotos ? JSON.parse(storedPhotos) : [];
-        if (isFavorite) {
-            // Add photo to favorites
-            const currentPhoto = { width, height, src, alt, imageId, type, tags ,isFavorite};
+
+        if (newFavoriteState) {
+            // Add the current photo to the favorites
+            const currentPhoto = { width, height, src, alt, imageId, type, tags, Favorite: true };
             const newPhotos = [...previousPhotos, currentPhoto];
             localStorage.setItem('favorite-photos', JSON.stringify(newPhotos));
         } else {
-            // Remove photo from favorites
-            const updatedPhotos = previousPhotos.filter(photo => String(photo.imageId) !== String(id));
+            // Remove the current photo from favorites
+            const updatedPhotos = previousPhotos.filter(photo => photo.imageId !== imageId);
             localStorage.setItem('favorite-photos', JSON.stringify(updatedPhotos));
         }
-    }
+    };
+
     return (
-        <div
-            className="relative mb-2">
+        <div className="relative mb-2">
             {/* Ensure every image has a src */}
             {src && src.trim() !== "" ? (
                 <Image
@@ -53,20 +71,24 @@ const Picture = ({ width, type, height, src, alt, imageId, tags ,Favorite}: Pict
             )}
 
             {/* Overlay */}
-            <div
-                className={`absolute inset-0 bg-black/50 transition-opacity opacity-0 hover:opacity-100 rounded-md`}
-            >
+            <div className={`absolute inset-0 bg-black/50 transition-opacity opacity-0 hover:opacity-100 rounded-md`}>
                 {/* Navigate to photo details */}
-                <Link href={{ pathname: `/photos/${tags.split(', ')[0]}`, query: { imageId, tags, type, width, height, src,alt,Favorite:+isFavorite } }} className="absolute inset-0">
+                <Link
+                    href={{
+                        pathname: `/photos/${tags.split(', ')[0]}`,
+                        query: { imageId, tags, type, width, height, src, alt, Favorite: +isFavorite },
+                    }}
+                    className="absolute inset-0"
+                >
                     <span className="sr-only">View Photo</span>
                 </Link>
                 {/* Favorite button */}
                 <button
                     type="button"
                     className="absolute top-2 left-2 text-2xl text-rose-500 transition-opacity hover:bg-gray-400 hover:opacity-80 rounded-full p-1"
-                    onClick={() => { handleFavoriteBtn(+imageId) }}
+                    onClick={handleFavoriteBtn}
                 >
-                    {isFavorite ? <IoMdHeartEmpty /> : <IoMdHeart />}
+                    {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
                 </button>
             </div>
         </div>

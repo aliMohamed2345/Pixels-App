@@ -91,6 +91,7 @@ const Favorite = () => {
                     const { tags, videoId, duration, thumbnailSrc, width, height, src, type } = video;
                     return (
                         <Video videos={video.videos}
+                        Favorite={true}
                             key={i}
                             thumbnailSrc={thumbnailSrc}
                             width={width}
