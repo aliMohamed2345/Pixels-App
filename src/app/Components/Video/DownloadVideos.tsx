@@ -1,20 +1,17 @@
 'use client'
 import { useState } from "react";
-import { VideosProps } from "@/app/(pages)/videos/page";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { handleDownload } from "@/app/utils/handleDownloadLink";
 import { getSize } from "@/app/utils/getSize";
-export interface DownloadVideosProps {
-    src: string;
-    videos: VideosProps
-    tags: string;
-}
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
 
-const DownloadVideos = ({ src, tags, videos }: DownloadVideosProps) => {
+const DownloadVideos = () => {
+    const { src, tags, videos } = useSelector((state: RootState) => state.DownloadVideos)
     const [isWindowOpen, setIsWindowOpen] = useState<boolean>(false)
     const [currentLink, setCurrentLink] = useState<string>(src)
     const [currentOption, setCurrentOption] = useState<string>('tiny');
-     function handleSelectOption(src: string, title: string) {
+    function handleSelectOption(src: string, title: string) {
         setCurrentLink(src);
         setCurrentOption(title)
     }

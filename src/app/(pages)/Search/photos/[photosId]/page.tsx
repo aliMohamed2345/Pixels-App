@@ -5,8 +5,10 @@ import { photoDataProps } from "@/app/(pages)/photos/page";
 import Picture from "@/app/Components/Photo/Picture";
 import FilterWindow from "@/app/Components/Photo/FilterWindow";
 import Loading from "@/app/Components/Photo/Loading";
-
+import { useDispatch } from "react-redux";
+import { setPathName, setSearchQuery } from "@/app/redux/Slices/FilterWindowSlice";
 const PhotoId = () => {
+    const dispatch = useDispatch();
     const [searchedData, setSearchedData] = useState<photoDataProps[]>([]);
     const [totalHits, setTotalHits] = useState<number>(0)
     const [page, setPage] = useState<number>(1);
@@ -64,14 +66,17 @@ const PhotoId = () => {
             }
         };
     }, []); // Set observer to run only once
-
+    useEffect(() => {
+        dispatch(setPathName(`/search/photos/${searchedValue}`))
+        dispatch(setSearchQuery(String(searchedValue)))
+    }, [dispatch,searchedValue])
     return (
         <div className="pt-20 text-secondary_text_color container mx-auto px-2">
             {isLoading ? <Loading numberOfLoadingItems={10} /> :
                 <>
                     <div className="flex items-center gap-3">
                         <p className="font-bold text-sm md:text-md lg:text-lg my-5">{totalHits} free Images about {searchedValue}</p>
-                        <FilterWindow pathName={`/search/photos/${searchedValue}`} searchQuery={`${searchedValue}`} />
+                        <FilterWindow />
                     </div>
                     <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-2 place-items-center">
                         {searchedData.map((photo) => {

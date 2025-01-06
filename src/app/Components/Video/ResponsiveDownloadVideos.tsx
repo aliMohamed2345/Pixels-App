@@ -3,8 +3,10 @@ import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { getSize } from "@/app/utils/getSize";
 import { handleDownload } from "@/app/utils/handleDownloadLink";
-import { DownloadVideosProps } from "./DownloadVideos";
-const ResponsiveDownloadVideos = ({ src, tags, videos }: DownloadVideosProps) => {
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+const ResponsiveDownloadVideos = () => {
+    const { src, tags, videos } = useSelector((state: RootState) => state.DownloadVideos)
     const [isWindowOpen, setIsWindowOpen] = useState<boolean>(false);
     const [currentLink, setCurrentLink] = useState<string>(src)
     const [currentOption, setCurrentOption] = useState<string>('tiny');

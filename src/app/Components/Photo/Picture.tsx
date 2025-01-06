@@ -18,7 +18,6 @@ export interface PictureProps {
 
 const Picture = ({ width, type, height, src, alt, imageId, tags, Favorite }: PictureProps) => {
     const [isFavorite, setIsFavorite] = useState(Favorite);
-
     // Effect to check if the image is already in the favorites from localStorage
     useEffect(() => {
         const storedPhotos = localStorage.getItem('favorite-photos');

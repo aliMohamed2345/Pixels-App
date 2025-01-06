@@ -11,14 +11,15 @@ import DownloadVideos from "@/app/Components/Video/DownloadVideos";
 import ResponsiveDownloadVideos from "@/app/Components/Video/ResponsiveDownloadVideos";
 import { getDuration } from "@/app/utils/getDuration";
 import { VideoProps } from "@/app/Components/Video/Video";
-
+import { useDispatch } from "react-redux";
+import { setSrc, setTags, setVideos } from "@/app/redux/Slices/DownloadVideosSlice";
 const VideoId = () => {
-    const { tags, type, width, height, src, duration, alt, thumbnailSrc, videoId, Favorite } = Object.fromEntries(useSearchParams().entries())
+    const { tags, type, width, height, src, duration, alt, thumbnailSrc, videoId, Favorite, } = Object.fromEntries(useSearchParams().entries())
+    const dispatch = useDispatch()
     const videos = useSearchParams().get('videos')
     const videosData = JSON.parse(videos ?? "")
     const [filteredData, setFilteredData] = useState<videoDataProps[]>([])
     const [isFavorite, setIsFavorite] = useState(Boolean(Favorite));
-
     function handleFavoriteVideoBtn(id: number) {
         setIsFavorite(prev => !prev);
         let previousVideos: VideoProps[] = [];
@@ -56,7 +57,11 @@ const VideoId = () => {
 
         filterData();
     }, [tags]);
-
+    useEffect(() => {
+        dispatch(setSrc(src))
+        dispatch(setTags(tags))
+        dispatch(setVideos(videosData))
+    }, [dispatch, src, tags, videosData])
     return (
         <div className="flex gap-3 flex-col">
             <div className='pt-20 flex flex-col lg:flex-row container mx-auto px-5 items-center justify-around gap-3 '>
@@ -84,10 +89,10 @@ const VideoId = () => {
                             </button>
                         </div>
                         <div className="hidden md:block">
-                            <DownloadVideos src={src} tags={tags} videos={videosData} />
+                            <DownloadVideos />
                         </div>
                         <div className="block md:hidden">
-                            <ResponsiveDownloadVideos src={src} tags={tags} videos={videosData} />
+                            <ResponsiveDownloadVideos />
                         </div>
                     </div>
                 </div>

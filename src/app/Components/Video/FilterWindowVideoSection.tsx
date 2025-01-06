@@ -4,21 +4,19 @@ import { FaFilter } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import DropdownMenu from "../Home/DropDownMenu";
 import Link from "next/link";
-export interface filterDataProps {
-    imageTypes: string,
-    orientation: string,
-    color?: string
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+interface filterDataProps {
+    videoTypes: string,
 }
-export const InitialFilterData: filterDataProps = {
-    imageTypes: "",
-    orientation: "",
-    color: ""
+const InitialFilterData: filterDataProps = {
+    videoTypes: ''
 }
-const FilterWindowVideoSection = ({ pathName, searchQuery = "" }: { pathName: string, searchQuery?: string }) => {
+const FilterWindowVideoSection = () => {
     const videoType = ["all", "film", "animation"];
     const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
     const [filterData, setFilterData] = useState<filterDataProps>(InitialFilterData);
-
+    const { pathName, searchQuery } = useSelector((state: RootState) => state.FilterWindow)
     const handleDropdownChange = (key: keyof filterDataProps, value: string) => {
         setFilterData((prev) => ({ ...prev, [key]: value }));
     };
@@ -55,9 +53,9 @@ const FilterWindowVideoSection = ({ pathName, searchQuery = "" }: { pathName: st
                     Filter By
                 </h4>
                 <div className="flex gap-3 my-10 mx-auto justify-around items-center flex-col lg:flex-row md:flex-row">
-                    <DropdownMenu header="video type" items={videoType} onSelectionChange={(value) => handleDropdownChange("imageTypes", value)} />
+                    <DropdownMenu header="video type" items={videoType} onSelectionChange={(value) => handleDropdownChange("videoTypes", value)} />
                 </div>
-                <Link onClick={() => setIsFilterOpen(false)} className="w-5/6 p-2 rounded-md bg-secondary hover:bg-background_hover transition-all m-auto mb-12 block text-center" href={{ pathname: `${pathName}`, query: {videoType: filterData.imageTypes, q: `${searchQuery}` } }}> Apply</Link>
+                <Link onClick={() => setIsFilterOpen(false)} className="w-5/6 p-2 rounded-md bg-secondary hover:bg-background_hover transition-all m-auto mb-12 block text-center" href={{ pathname: `${pathName}`, query: { videoType: filterData.videoTypes, q: `${searchQuery}` } }}> Apply</Link>
             </div >
         </>
     );

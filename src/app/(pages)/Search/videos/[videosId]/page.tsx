@@ -5,7 +5,10 @@ import Video from "@/app/Components/Video/Video";
 import Loading from "@/app/Components/Photo/Loading";
 import { videoDataProps } from "@/app/(pages)/videos/page";
 import FilterWindowVideoSection from "@/app/Components/Video/FilterWindowVideoSection";
+import { useDispatch } from "react-redux";
+import { setPathName, setSearchQuery } from "@/app/redux/Slices/FilterWindowSlice";
 const VideoId = () => {
+    const dispatch = useDispatch()
     const [searchedData, setSearchedData] = useState<videoDataProps[]>([]);
     const [totalHits, setTotalHits] = useState<number>(0);
     const [page, setPage] = useState<number>(1);
@@ -13,6 +16,7 @@ const VideoId = () => {
     const observerRef = useRef<HTMLDivElement | null>(null);
     const searchedValue = useSearchParams().get('q');
     const videoType = useSearchParams()?.get('videoType') || "";
+
 
     // Function to fetch videos based on the current page
     const fetchVideos = useCallback(async (currentPage: number) => {
@@ -41,6 +45,10 @@ const VideoId = () => {
         }
     }, [searchedValue, videoType]);
 
+    useEffect(() => {
+        dispatch(setPathName(`/search/videos/${searchedValue}`))
+        dispatch(setSearchQuery(String(searchedValue)))
+    }, [dispatch, searchedValue])
     // Fetch videos when the page or search value changes
     useEffect(() => {
         if (!searchedValue) return; // Do not fetch if no search term
@@ -57,7 +65,6 @@ const VideoId = () => {
             },
             { threshold: 0.5 }
         );
-
         const observerElement = observerRef.current;
         if (observerElement) {
             observer.observe(observerElement); // Observe the bottom div for scrolling
@@ -81,10 +88,7 @@ const VideoId = () => {
                         <p className="font-bold text-sm md:text-md lg:text-lg my-5">
                             {totalHits} free Videos about {searchedValue}
                         </p>
-                        <FilterWindowVideoSection
-                            pathName={`/search/videos/${searchedValue}`}
-                            searchQuery={`${searchedValue}`}
-                        />
+                        <FilterWindowVideoSection />
                     </div>
                     <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-2 place-items-center">
                         {searchedData

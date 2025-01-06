@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const SearchArea = () => {
-
     const [openSearchArea, setOpenSearchArea] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
     const [searchValues, setSearchValues] = useState<string[]>([]);

@@ -9,7 +9,6 @@ const Favorite = () => {
     const [currentMedia, setCurrentMedia] = useState<'photos' | 'videos'>('photos');
     const [favoritePhotos, setFavoritePhotos] = useState<PictureProps[]>([]);
     const [favoriteVideos, setFavoriteVideos] = useState<VideoProps[]>([]);
-    console.log(favoritePhotos.length == 0 && currentMedia === 'photos')
     useEffect(() => {
         // Fetch favorites from localStorage depend on the currentMedia
         if (currentMedia === 'photos') {

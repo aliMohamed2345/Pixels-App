@@ -6,6 +6,8 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import FilterWindowVideoSection from '@/app/Components/Video/FilterWindowVideoSection'
+import { useDispatch } from 'react-redux';
+import { setPathName } from '@/app/redux/Slices/FilterWindowSlice';
 export interface videoDataProps {
     id: number;
     duration: number;
@@ -22,6 +24,7 @@ export interface VideosProps {
 }
 
 function Videos() {
+    const dispatch = useDispatch()
     const [dataVideos, setDataVideos] = useState<videoDataProps[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1); // Track the current page
@@ -46,7 +49,7 @@ function Videos() {
         } finally {
             setIsLoading(false);
         }
-    }, [videoOrder,videoType]);
+    }, [videoOrder, videoType]);
 
 
     const scrollHorizontally = (scrollAmount: number) => {
@@ -63,6 +66,9 @@ function Videos() {
         fetchVideos(page);
     }, [page, fetchVideos, isLoading]);
 
+    useEffect(() => {
+        dispatch(setPathName(`/videos/`))
+    }, [dispatch])
     // Set up intersection observer
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -103,7 +109,7 @@ function Videos() {
                             <button onClick={() => { handlePhotoOrder('latest') }} type="button" className="font-bold text-secondary_text_color  p-4 w-full rounded-full">latest</button>
                             <button onClick={() => { handlePhotoOrder('popular') }} type="button" className="font-bold text-secondary_text_color p-4 w-full rounded-full">popular</button>
                         </div>
-                        <FilterWindowVideoSection pathName='/videos' />
+                        <FilterWindowVideoSection  />
                     </div>
                     <div className="flex items-center gap-2 mx-auto">
                         <MdKeyboardArrowLeft onClick={() => scrollHorizontally(-100)} className='text-sm cursor-pointer rounded-full transition-all text-text_color hover:bg-background_hover w-6 h-6' />
