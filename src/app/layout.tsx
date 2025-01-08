@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from './Components/Nav/Nav'
 import ReduxProvider from "./ReduxProvider";
 import ScrollToTop from "./Components/Home/ScrollToTop";
+import { Suspense } from 'react'
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -33,7 +34,9 @@ export default function RootLayout({
         <ReduxProvider>
           <Nav />
           <ScrollToTop />
-          {children}
+          <Suspense>
+            {children}
+          </Suspense>
         </ReduxProvider>
       </body>
     </html>
