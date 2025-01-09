@@ -80,7 +80,7 @@ const VideoId = () => {
                     <div className="flex gap-3 items-center relative justify-center flex-col sm:flex-row md:flex-row">
                         <div className="flex flex-between items-center gap-5">
                             <button onClick={() => { handleFavoriteVideoBtn(+videoId) }} type="button" title="favorite" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl bg-red text-rose-500 hover:bg-background_hover transition-all rounded-full p-1" aria-describedby="tooltip-05">
-                                {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                                {isFavorite ? <IoMdHeartEmpty /> : <IoMdHeart />}
                                 <span className="invisible absolute bottom-full left-1/2 z-10 mb-2 w-auto -translate-x-1/2 rounded bg-green-500 text-secondary p-2 text-xs text-white opacity-0 transition-all before:invisible  group-hover:visible group-hover:block group-hover:opacity-100 group-hover:before:visible group-hover:before:opacity-100">Favorite</span>
                             </button>
                             <button onClick={() => copyToClipboard(src)} type="button" title="copy photo" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl   hover:bg-background_hover transition-all rounded-full p-1" >

@@ -14,6 +14,7 @@ const PhotoId = () => {
     const { imageId, tags, type, width, height, src, alt, Favorite } = Object.fromEntries(useSearchParams().entries())
     const [filteredData, setFilteredData] = useState<photoDataProps[]>([])
     const [isFavorite, setIsFavorite] = useState<boolean>(Boolean(Favorite));
+    console.log(imageId, tags, type, width, height, src, alt, Favorite)
     function handleFavoriteBtn(id: number) {
         setIsFavorite(prev => !prev);
         let previousPhotos: PictureProps[] = [];
@@ -61,7 +62,7 @@ const PhotoId = () => {
                     <div className="flex gap-3 items-center justify-center">
                         <button onClick={() => handleDownload(src, `${tags.split(', ')[0]} image from pixels`)} className="rounded-full flex-1 p-3 bg-green-500 text-white text-center transition-all font-bold hover:scale-105">download</button>
                         <button onClick={() => { handleFavoriteBtn(+imageId) }} type="button" title="favorite" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl bg-red text-rose-500 hover:bg-background_hover transition-all rounded-full p-1" aria-describedby="tooltip-05">
-                            {isFavorite ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                            {isFavorite ? <IoMdHeartEmpty /> : <IoMdHeart />}
                             <span className="invisible absolute bottom-full left-1/2 z-10 mb-2 w-auto -translate-x-1/2 rounded bg-green-500 text-secondary p-2 text-xs text-white opacity-0 transition-all before:invisible  group-hover:visible group-hover:block group-hover:opacity-100 group-hover:before:visible group-hover:before:opacity-100">Favorite</span>
                         </button>
                         <button onClick={() => copyToClipboard(src)} type="button" title="copy photo" className="relative overflow-hidden cursor-pointer group hover:overflow-visible focus-visible:outline-none text-2xl   hover:bg-background_hover transition-all rounded-full p-1" >

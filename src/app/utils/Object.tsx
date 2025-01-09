@@ -14,11 +14,11 @@ export const sideMenuOptions: sideMenuProps[] = [
 export const samplePhotoData = {
     width: 640,
     type: 'photo',
-    height: 640,
-    src: `https://pixabay.com/get/gb2ab4d5b1255e74a243559934ea561f57bab64150f0ac28face4b3377aaad2fb644e2ab7481a93a8f87609ee4a51ea0e56e8481e40c9adf7a7c32df3123f7cd5_640.jpg`,
-    alt: `hills, laptop wallpaper, india`,
-    tags: `hills`,
-    imageId: 2836301,
+    height: 425,
+    src: `https://pixabay.com/get/g554b890ce65f55803d4ceb3cf38e861b94956e1da825b19934d7ee98ce27c9f64b8e10aea367f82adfca83576cdf7e67df47cdea13065d77efd93ca1437e05cd_640.jpg`,
+    alt: `butterfly, bloom, insects`,
+    tags: `butterfly`,
+    imageId: `9306937`,
     Favorite: true
 }
 export const sampleVideoData = {
