@@ -1,5 +1,5 @@
 [build]
-  command = "CI='' npm run build"
+  command = "npm run build"
   publish = "/.next"
   base ="/"
 
@@ -7,3 +7,4 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  
