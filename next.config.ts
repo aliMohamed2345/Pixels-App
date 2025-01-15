@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   exportTrailingSlash: true,
   images: {
+    domains:['pixabay.com', 'source.unsplash.com', 'cdn.pixabay.com'],
     remotePatterns: [
       {
         protocol: 'https',
