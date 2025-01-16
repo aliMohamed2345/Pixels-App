@@ -1,6 +1,5 @@
 'use client'
 import { useSearchParams } from "next/navigation";
-import Image from 'next/image'
 import Link from 'next/link'
 import { copyToClipboard } from '@/app/utils/handleCopyBtn'
 import { handleDownload } from "@/app/utils/handleDownloadLink";
@@ -14,7 +13,6 @@ const PhotoId = () => {
     const { imageId, tags, type, width, height, src, alt, Favorite } = Object.fromEntries(useSearchParams().entries())
     const [filteredData, setFilteredData] = useState<photoDataProps[]>([])
     const [isFavorite, setIsFavorite] = useState<boolean>(Boolean(Favorite));
-    console.log(imageId, tags, type, width, height, src, alt, Favorite)
     function handleFavoriteBtn(id: number) {
         setIsFavorite(prev => !prev);
         let previousPhotos: PictureProps[] = [];
@@ -48,7 +46,7 @@ const PhotoId = () => {
     return (
         <div className="flex gap-3 flex-col">
             <div className='pt-20 flex flex-col lg:flex-row container mx-auto px-5 items-center justify-around gap-3 '>
-                <Image src={src} width={+width} height={+height} alt={imageId} loading="lazy" className="rounded-md" />
+                <img src={src} width={+width} height={+height} alt={imageId} loading="lazy" className="rounded-md" />
                 <div className="shadow-lg rounded-lg p-5 bg-secondary text-text_color flex flex-col gap-5 w-[65vw] text-center  ">
                     <h4>{tags.split(', ')[0]} photo</h4>
                     <div className="gap-2 flex items-center flex-wrap justify-center">
