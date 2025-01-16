@@ -11,7 +11,6 @@ const PhotosSection = () => {
                     alt='flower'
                     width={640}
                     height={480}
-                    loading='lazy'
                     className='rounded-md'
                 />
                 <p className='capitalize w-full text-center md:text-left text-text_color lg:w-[30vw] text-sm sm:text-lg md:text-xl '>Discover Stunning Images Explore a vast collection of high-quality photos that capture beauty, emotion, and creativity. Perfect for designers, content creators, and anyone seeking visual inspiration.</p>

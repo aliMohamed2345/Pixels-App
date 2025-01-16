@@ -56,7 +56,6 @@ const Picture = ({ width, type, height, src, alt, imageId, tags, Favorite }: Pic
             {/* Ensure every image has a src */}
             {src && src.trim() !== "" ? (
                 <Image
-                    loading="lazy"
                     width={width}
                     height={height}
                     src={src}
