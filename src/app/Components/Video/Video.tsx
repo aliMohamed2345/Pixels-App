@@ -1,5 +1,4 @@
 'use client';
-import Image from "next/image";
 import Link from "next/link";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { useState, useEffect, useRef } from "react";
@@ -71,7 +70,7 @@ const Video = ({ width, type, height, src, tags, duration, alt, thumbnailSrc, vi
             {/* Ensure every image has a src */}
             {src && src.trim() !== "" ? (
                 <>
-                    <Image width={width} height={height} src={thumbnailSrc} alt={alt} className={`rounded-md transition-opacity ${isPlayed ? "opacity-0" : "opacity-100"}`} />
+                    <img loading="lazy" width={width} height={height} src={thumbnailSrc} alt={alt} className={`rounded-md transition-opacity ${isPlayed ? "opacity-0" : "opacity-100"}`} />
                     <video ref={videoRef} width={width} height={height} src={src} loop muted className={`rounded-md absolute top-0 left-0 w-full h-full object-cover transition-opacity ${isPlayed ? "opacity-100" : "opacity-0"}`} />
                 </>
             ) : (

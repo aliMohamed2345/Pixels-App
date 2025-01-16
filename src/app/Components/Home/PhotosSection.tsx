@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import flower from '../../../../public/marguerite-729510.jpg'
 const PhotosSection = () => {
@@ -6,7 +5,8 @@ const PhotosSection = () => {
         <h5 className='text-2xl sm:text-3xl md:text-4xl  text-text_color text-center my-5 font-bold'>Photo</h5>
         <div className="bg-secondary rounded-lg p-5 ">
             <div className="flex flex-col md:flex-row lg:flex-row items-center justify-between gap-2 lg:gap-8">
-                <Image
+                <img
+                    loading='lazy'
                     src={flower.src}
                     alt='flower'
                     width={640}

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export interface PictureProps {
@@ -55,12 +54,13 @@ const Picture = ({ width, type, height, src, alt, imageId, tags, Favorite }: Pic
         <div className="relative mb-2">
             {/* Ensure every image has a src */}
             {src && src.trim() !== "" ? (
-                <Image
+                <img
                     width={width}
                     height={height}
                     src={src}
                     alt={alt}
                     className="rounded-md"
+                    loading="lazy"
                 />
             ) : (
                 <div className={`w-[${width}] h-[${height}] bg-gray-200 w-full h-full flex items-center justify-center`}>
