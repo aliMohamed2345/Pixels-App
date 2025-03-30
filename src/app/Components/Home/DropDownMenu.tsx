@@ -30,6 +30,7 @@ const DropdownMenu = ({ header, items, onSelectionChange }: DropdownMenuProps) =
     };
 
     return (
+        
         <div
             className="relative inline-block text-center bg-secondary text-text_color hover:bg-background_hover transition-all rounded-md w-5/6 lg:w-1/3"
             ref={dropdownRef}
